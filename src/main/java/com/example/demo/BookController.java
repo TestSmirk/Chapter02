@@ -15,7 +15,7 @@ public class BookController {
         Book book = new Book();
         book.setAuthor("罗贯中");
         book.setName("三国演义");
-        book.setPrice(30f);
+        book.setPrice(30.0f);
         book.setPublicationDate(new Date());
         return book;
     }

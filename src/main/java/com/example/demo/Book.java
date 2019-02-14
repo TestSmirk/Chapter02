@@ -9,13 +9,11 @@ public class Book {
     private Integer id;
     private String name;
     private String author;
-
-    @JsonIgnore
     private Float price;
    private Date publicationDate;
 
-    public Float getPrice() {
-        return price;
+    public int getPrice() {
+        return (int) (price/1);
     }
 
     public void setPrice(Float price) {
