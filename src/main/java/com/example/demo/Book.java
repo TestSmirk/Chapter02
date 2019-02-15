@@ -9,6 +9,16 @@ public class Book {
                 '}';
     }
 
+    private Integer id;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     private String name;
     private String author;
 
