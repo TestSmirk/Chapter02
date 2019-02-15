@@ -1,7 +1,9 @@
 package com.example.demo;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.HashMap;
@@ -17,4 +19,13 @@ public class GlobalConfig {
         map.put("gender","男");
         return map;
     }
+    @InitBinder("b")
+    public void init(WebDataBinder binder){
+        binder.setFieldDefaultPrefix("b.");
+    }
+    @InitBinder("a")
+    public void init2(WebDataBinder binder){
+        binder.setFieldDefaultPrefix("a.");
+    }
+
 }

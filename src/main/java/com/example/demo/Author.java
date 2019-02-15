@@ -1,16 +1,16 @@
 package com.example.demo;
 
-public class Book {
+public class Author {
     @Override
     public String toString() {
-        return "Book{" +
+        return "Author{" +
                 "name='" + name + '\'' +
-                ", author='" + author + '\'' +
+                ", age=" + age +
                 '}';
     }
 
     private String name;
-    private String author;
+    private int age;
 
     public String getName() {
         return name;
@@ -20,11 +20,11 @@ public class Book {
         this.name = name;
     }
 
-    public String getAuthor() {
-        return author;
+    public int getAge() {
+        return age;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setAge(int age) {
+        this.age = age;
     }
 }
