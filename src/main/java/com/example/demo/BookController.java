@@ -3,6 +3,9 @@ package com.example.demo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,42 +17,26 @@ import java.util.List;
 
 @RestController
 public class BookController {
+
+
     @Autowired
-    BookService bookService;
-
-    @GetMapping("/findAll")
-    public void book() {
-        PageRequest pageable = PageRequest.of(2, 3);
-        Page<Book> page = bookService.getBookByPage(pageable);
-        System.out.println("总页数: " + page.getTotalPages());
-        System.out.println("总记录数: " + page.getTotalElements());
-        System.out.println("查询结果: " + page.getContent());
-        System.out.println("当前页数: " + page.getNumber() + 1);
-        System.out.println("当前页记录数: " + page.getNumberOfElements());
-        System.out.println("每页记录数: " + page.getSize());
-    }
-    @GetMapping("search")
-    public void search(){
-        List<Book> bs1 = bookService.getBookByIdAndAuthor("鲁迅", 7);
-        List<Book> bs2 = bookService.getBooksByAuthorStartingWith("吴");
-        List<Book> bs3 = bookService.getBooksByIdAndName("西", 8);
-        List<Book> bs4 = bookService.getBooksByPriceGreaterThan(30f);
-        Book b = bookService.getMaxIdBook();
-        System.out.println("bs1:"+bs1);
-        System.out.println("bs2:"+bs2);
-        System.out.println("bs3:"+bs3);
-        System.out.println("bs4:"+bs4);
-        System.out.println("b: "+b);
-
-    }
-    @GetMapping("/save")
-    public void save(){
-        Book book = new Book();
-        book.setAuthor("鲁迅");
-        book.setName("呐喊");
-        book.setPrice(23f);
-        bookService.addBook(book);
-
+    RedisTemplate redisTemplate;
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
+    @GetMapping("test1")
+    public void test1(){
+        ValueOperations<String, String> ops1 = stringRedisTemplate.opsForValue();
+        ops1.set("name","三国演义");
+        String name = ops1.get("name");
+        System.out.println(name);
+        ValueOperations ops2 = redisTemplate.opsForValue();
+        Book b1 = new Book();
+        b1.setId(1);
+        b1.setName("红楼梦");
+        b1.setAuthor("曹雪芹");
+        ops2.set("b1",b1);
+        Book book = (Book) ops2.get("b1");
+        System.out.println(book);
     }
 
 }

@@ -1,20 +1,22 @@
 package com.example.demo;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
-@Entity(name = "t_book")
-public class Book {
+public class Book implements Serializable {
     @Override
     public String toString() {
         return "Book{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", author='" + author + '\'' +
                 '}';
+
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private  Integer id;
+    private String name;
+    private String author;
 
     public Integer getId() {
         return id;
@@ -22,29 +24,6 @@ public class Book {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    @Column(name = "book_name",nullable = false)
-    private String name;
-    private String author;
-    private Float price;
-    @Transient
-    private String description;
-
-    public Float getPrice() {
-        return price;
-    }
-
-    public void setPrice(Float price) {
-        this.price = price;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getName() {
