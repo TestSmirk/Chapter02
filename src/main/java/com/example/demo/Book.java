@@ -1,29 +1,18 @@
 package com.example.demo;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
 public class Book implements Serializable {
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", author='" + author + '\'' +
-                '}';
 
-    }
-
-    private  Integer id;
     private String name;
     private String author;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    @Override
+    public String toString() {
+        return "Book{" +
+                "name='" + name + '\'' +
+                ", author='" + author + '\'' +
+                '}';
     }
 
     public String getName() {

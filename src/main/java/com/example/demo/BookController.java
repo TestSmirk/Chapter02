@@ -17,26 +17,21 @@ import java.util.List;
 
 @RestController
 public class BookController {
-
-
     @Autowired
     RedisTemplate redisTemplate;
     @Autowired
     StringRedisTemplate stringRedisTemplate;
-    @GetMapping("test1")
+    @GetMapping("/test1")
     public void test1(){
-        ValueOperations<String, String> ops1 = stringRedisTemplate.opsForValue();
-        ops1.set("name","三国演义");
-        String name = ops1.get("name");
-        System.out.println(name);
-        ValueOperations ops2 = redisTemplate.opsForValue();
-        Book b1 = new Book();
-        b1.setId(1);
-        b1.setName("红楼梦");
-        b1.setAuthor("曹雪芹");
-        ops2.set("b1",b1);
-        Book book = (Book) ops2.get("b1");
-        System.out.println(book);
+        ValueOperations ops = redisTemplate.opsForValue();
+        Book book = new Book();
+        book.setName("水浒传");
+        book.setAuthor("施耐庵");
+        ops.set("b1",book);
+        System.out.println(ops.get("b1"));
+        ValueOperations<String, String> ops2 = stringRedisTemplate.opsForValue();
+        ops2.set("k1","v1");
+        System.out.println(ops2.get("k1"));
     }
 
 }
