@@ -1,6 +1,8 @@
 package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,25 +17,38 @@ public class BookController {
     @Autowired
     BookService bookService;
 
-    @GetMapping("/bookOps")
+    @GetMapping("/findAll")
     public void book() {
-        Book b1 = new Book();
-        b1.setName("西厢记");
-        b1.setAuthor("王实甫");
-        int i = bookService.addBook(b1);
-        System.out.println("addBook>>>" + i);
-        Book b2 = new Book();
-        b2.setId(1);
-        b2.setName("朝花夕拾");
-        b2.setAuthor("鲁迅");
-        int updateBook = bookService.updateBook(b2);
-        System.out.println("updateBook>>>" + updateBook);
-        Book b3 = bookService.getBookById(1);
-        System.out.println("getBookById>>>>" + b3);
-        int delete = bookService.deleteBookById(2);
-        System.out.println("deleteBookById>>" + delete);
-        List<Book> allBooks = bookService.getAllBooks();
-        System.out.println("getAllBooks>>>" + allBooks);
+        PageRequest pageable = PageRequest.of(2, 3);
+        Page<Book> page = bookService.getBookByPage(pageable);
+        System.out.println("总页数: " + page.getTotalPages());
+        System.out.println("总记录数: " + page.getTotalElements());
+        System.out.println("查询结果: " + page.getContent());
+        System.out.println("当前页数: " + page.getNumber() + 1);
+        System.out.println("当前页记录数: " + page.getNumberOfElements());
+        System.out.println("每页记录数: " + page.getSize());
+    }
+    @GetMapping("search")
+    public void search(){
+        List<Book> bs1 = bookService.getBookByIdAndAuthor("鲁迅", 7);
+        List<Book> bs2 = bookService.getBooksByAuthorStartingWith("吴");
+        List<Book> bs3 = bookService.getBooksByIdAndName("西", 8);
+        List<Book> bs4 = bookService.getBooksByPriceGreaterThan(30f);
+        Book b = bookService.getMaxIdBook();
+        System.out.println("bs1:"+bs1);
+        System.out.println("bs2:"+bs2);
+        System.out.println("bs3:"+bs3);
+        System.out.println("bs4:"+bs4);
+        System.out.println("b: "+b);
+
+    }
+    @GetMapping("/save")
+    public void save(){
+        Book book = new Book();
+        book.setAuthor("鲁迅");
+        book.setName("呐喊");
+        book.setPrice(23f);
+        bookService.addBook(book);
 
     }
 

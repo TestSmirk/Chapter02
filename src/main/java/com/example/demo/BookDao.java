@@ -1,6 +1,11 @@
 package com.example.demo;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -8,26 +13,19 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class BookDao {
-    @Autowired
-    JdbcTemplate jdbcTemplate;
+public interface BookDao extends JpaRepository<Book, Integer> {
+    List<Book> getBooksByAuthorStartingWith(String author);
 
-    public int addBook(Book book) {
-        return jdbcTemplate.update("insert into book(name,author) values (?,?)", book.getName(), book.getAuthor());
-    }
+    List<Book> getBooksByPriceGreaterThan(Float price);
 
-    public int updateBook(Book book) {
-        return jdbcTemplate.update("update book set name=?,author=? where id=?", book.getName(), book.getAuthor(), book.getId());
-    }
+    @Query(value = "select * from t_book where id=(select max(id) from t_book)", nativeQuery = true)
+    Book getMaxIdBook();
 
-    public int deleteBookById(Integer id) {
-        return jdbcTemplate.update("delete from book where id=?", id);
-    }
+    @Query("select b from t_book b where b.id>:id and b.author=:author")
+    List<Book> getBookByIdAndAuthor(@Param("author") String author, @Param("id") Integer id);
 
-    public Book getBookById(Integer id){
-        return jdbcTemplate.queryForObject("select * from book where id=?",new BeanPropertyRowMapper<>(Book.class),id);
-    }
-    public List<Book> getAllBooks() {
-        return jdbcTemplate.query("select * from book", new BeanPropertyRowMapper<>(Book.class));
-    }
+    @Query("select  b from t_book b where b.id<?2 and b.name like %?1%")
+    List<Book> getBooksByIdAndAndName(String name, Integer id);
+
+
 }
