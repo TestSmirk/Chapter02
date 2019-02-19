@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +33,16 @@ public class BookController {
         ValueOperations<String, String> ops2 = stringRedisTemplate.opsForValue();
         ops2.set("k1","v1");
         System.out.println(ops2.get("k1"));
+    }
+    @GetMapping("/result")
+    public void test2(){
+        Integer[] ints = new Integer[]{1, 2, 3, 4, 5};
+
+        List<Integer> ints1 =  Arrays.asList(ints);
+        ints1.add(3);
+        System.out.println(ints1);
+
+
     }
 
 }
